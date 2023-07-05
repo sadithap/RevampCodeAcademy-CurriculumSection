@@ -1,0 +1,92 @@
+{
+    "progTitle": "Programming Fundamentals",
+    "progHeadline": "Learn the Basics of Programming",
+    "progType": "course",
+    "progLearningType": "online",
+    "progRating": 4.5,
+    "progTotalTrainee": 50,
+    "progImage": null,
+    "progBestSeller": "1",
+    "progPrice": 29.99,
+    "progLanguage": "english",
+    "progDuration": 1,
+    "progDurationType": "days",
+    "progTagSkill": [
+        "Python",
+        "JavaScript"
+    ],
+    "progCityId": 2,
+    "progCateId": 2,
+    "progCreatedBy": 1,
+    "progStatus": "publishe",
+    "predItemLearning": "Variables, Conditions, Loops",
+    "description": "Get started with the fundamentals of programming and learn key concepts such as variables, conditions, and loops. This course is suitable for beginners who want to dive into the world of coding and build a solid foundation.",
+    "sections": [
+        {
+            "title": "Introduction to Programming",
+            "description": "Learn the basics of programming and understand how it is used in various applications.",
+            "sectionDetail": [
+                {
+                    "detailtitle": "Variables and Data Types",
+                    "detailPreview": "1",
+                    "detailScore": 0,
+                    "detailNote": "",
+                    "detailMinute": 30
+                },
+                {
+                    "detailtitle": "Conditional Statements",
+                    "detailPreview": "1",
+                    "detailScore": 0,
+                    "detailNote": "",
+                    "detailMinute": 30
+                }
+            ]
+        }
+    ]
+}
+{
+    "progTitle": "Logic & Solving Problem",
+    "progHeadline": "Java Fundamental",
+    "progType": "bootcamp",
+    "progLearningType": "offline",
+    "progRating": 5,
+    "progTotalTrainee": 15,
+    "progImage": null,
+    "progBestSeller": "0",
+    "progPrice": 0,
+    "progLanguage": "english",
+    "progDuration": 30,
+    "progDurationType": "days",
+    "progTagSkill": [
+        "JavaScript",
+        "PostgreSQL"
+    ],
+    "progCityId": 2,
+    "progCateId": 2,
+    "progCreatedBy": 1,
+    "progStatus": "draft",
+    "predItemLearning": "Fundamental, Database",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "sections": [
+        {
+            "title": "Fundamentals",
+            "description": "Lorem ipsum dolor sit amet",
+            "sectionDetail": [
+                {
+                    "detailtitle": "Instalation",
+                    "detailPreview": "1",
+                    "detailScore": 0,
+                    "detailNote": "",
+                    "detailMinute": 30
+                },
+                {
+                    "detailtitle": "Hello World",
+                    "detailPreview": "1",
+                    "detailScore": 0,
+                    "detailNote": "",
+                    "detailMinute": 30
+                }
+            ]
+        }
+    ]
+}

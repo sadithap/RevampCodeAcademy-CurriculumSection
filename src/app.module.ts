@@ -10,7 +10,7 @@ import { GlobalModule } from './global/global.module';
       port: 5432,
       username: 'postgres',
       password: 'admin',
-      database: 'codexacademy',
+      database: 'revampdb',
       entities: ['dist/output/entities/*.js'],
       synchronize: false,
     }),

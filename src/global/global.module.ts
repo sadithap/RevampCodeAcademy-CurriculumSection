@@ -7,6 +7,8 @@ import { ProgramEntityDescription } from 'output/entities/ProgramEntityDescripti
 import { Sections } from 'output/entities/Sections';
 import { SectionDetail } from 'output/entities/SectionDetail';
 import { SectionDetailMaterial } from 'output/entities/SectionDetailMaterial';
+import { MulterModule } from '@nestjs/platform-express';
+import { UploadMulter } from 'src/multer/multer';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { SectionDetailMaterial } from 'output/entities/SectionDetailMaterial';
       SectionDetail,
       SectionDetailMaterial,
     ]),
+    MulterModule.register(UploadMulter.MulterOption()),
   ],
   providers: [ProgramEntityService],
   controllers: [ProgramEntityController],

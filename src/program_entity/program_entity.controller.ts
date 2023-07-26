@@ -6,8 +6,11 @@ import {
   Post,
   Put,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ProgramEntityService } from './program_entity.services';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('program_entity')
 export class ProgramEntityController {
@@ -36,5 +39,11 @@ export class ProgramEntityController {
   @Delete(':id')
   public async Delete(@Param('id') id: number) {
     return this.Service.Delete(id);
+  }
+
+  @Put('upload_profile/:id')
+  @UseInterceptors(FileInterceptor('file'))
+  public async Upload(@UploadedFile() file, @Param('id') id: number) {
+    return this.Service.upload(file, id);
   }
 }

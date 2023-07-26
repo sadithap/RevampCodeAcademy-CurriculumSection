@@ -23,7 +23,12 @@ export class SectionDetail {
   })
   secdTitle: string | null;
 
-  @Column('character', { name: 'secd_preview', nullable: true, length: 1 })
+  @Column('character', {
+    name: 'secd_preview',
+    nullable: true,
+    length: 1,
+    default: () => "'0'",
+  })
   secdPreview: string | null;
 
   @Column('integer', { name: 'secd_score', nullable: true })

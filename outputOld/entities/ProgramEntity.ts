@@ -2,26 +2,13 @@ import {
   Column,
   Entity,
   Index,
-  JoinColumn,
-  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Batch } from './Batch';
-import { CartItems } from './CartItems';
-import { InstructorPrograms } from './InstructorPrograms';
-import { ProgramApply } from './ProgramApply';
-import { ProgramApplyProgress } from './ProgramApplyProgress';
-import { Category } from './Category';
-import { City } from './City';
-import { Employee } from './Employee';
-import { Status } from './Status';
 import { ProgramEntityDescription } from './ProgramEntityDescription';
 import { ProgramReviews } from './ProgramReviews';
-import { SalesOrderDetail } from './SalesOrderDetail';
 import { Sections } from './Sections';
-import { SpecialOfferPrograms } from './SpecialOfferPrograms';
 
 @Index('program_entity_pkey', ['progEntityId'], { unique: true })
 @Entity('program_entity', { schema: 'curriculum' })
@@ -47,6 +34,7 @@ export class ProgramEntity {
     name: 'prog_type',
     nullable: true,
     length: 15,
+    default: () => "'course'",
   })
   progType: string | null;
 
@@ -54,20 +42,21 @@ export class ProgramEntity {
     name: 'prog_learning_type',
     nullable: true,
     length: 15,
+    default: () => "'offline'",
   })
   progLearningType: string | null;
 
-  @Column('integer', { name: 'prog_rating', nullable: true })
-  progRating: number | null;
+  @Column('numeric', { name: 'prog_rating', nullable: true })
+  progRating: string | null;
 
   @Column('integer', { name: 'prog_total_trainee', nullable: true })
   progTotalTrainee: number | null;
 
   @Column('timestamp without time zone', {
-    name: 'prog_modified_date',
+    name: 'prog_create_date',
     nullable: true,
   })
-  progModifiedDate: Date | null;
+  progCreateDate: Date | null;
 
   @Column('character varying', {
     name: 'prog_image',
@@ -76,18 +65,30 @@ export class ProgramEntity {
   })
   progImage: string | null;
 
-  @Column('character', { name: 'prog_best_seller', nullable: true, length: 1 })
+  @Column('character', {
+    name: 'prog_best_seller',
+    nullable: true,
+    length: 1,
+    default: () => "'0'",
+  })
   progBestSeller: string | null;
 
-  @Column('integer', { name: 'prog_price', nullable: true })
-  progPrice: number | null;
+  @Column('numeric', { name: 'prog_price', nullable: true })
+  progPrice: string | null;
 
   @Column('character varying', {
     name: 'prog_language',
     nullable: true,
     length: 35,
+    default: () => "'english'",
   })
   progLanguage: string | null;
+
+  @Column('timestamp without time zone', {
+    name: 'prog_modified_date',
+    nullable: true,
+  })
+  progModifiedDate: Date | null;
 
   @Column('integer', { name: 'prog_duration', nullable: true })
   progDuration: number | null;
@@ -96,6 +97,7 @@ export class ProgramEntity {
     name: 'prog_duration_type',
     nullable: true,
     length: 15,
+    default: () => "'days'",
   })
   progDurationType: string | null;
 
@@ -112,44 +114,16 @@ export class ProgramEntity {
   @Column('integer', { name: 'prog_cate_id', nullable: true })
   progCateId: number | null;
 
-  @OneToMany(() => Batch, (batch) => batch.batchEntity)
-  batches: Batch[];
+  @Column('integer', { name: 'prog_created_by', nullable: true })
+  progCreatedBy: number | null;
 
-  @OneToMany(() => CartItems, (cartItems) => cartItems.caitProgEntity)
-  cartItems: CartItems[];
-
-  @OneToMany(
-    () => InstructorPrograms,
-    (instructorPrograms) => instructorPrograms.inproEntity,
-  )
-  instructorPrograms: InstructorPrograms[];
-
-  @OneToMany(() => ProgramApply, (programApply) => programApply.prapProgEntity)
-  programApplies: ProgramApply[];
-
-  @OneToMany(
-    () => ProgramApplyProgress,
-    (programApplyProgress) => programApplyProgress.parogProgEntity,
-  )
-  programApplyProgresses: ProgramApplyProgress[];
-
-  @ManyToOne(() => Category, (category) => category.programEntities)
-  @JoinColumn([{ name: 'prog_cate_id', referencedColumnName: 'cateId' }])
-  progCate: Category;
-
-  @ManyToOne(() => City, (city) => city.programEntities)
-  @JoinColumn([{ name: 'prog_city_id', referencedColumnName: 'cityId' }])
-  progCity: City;
-
-  @ManyToOne(() => Employee, (employee) => employee.programEntities)
-  @JoinColumn([
-    { name: 'prog_created_by', referencedColumnName: 'empEntityId' },
-  ])
-  progCreatedBy: Employee;
-
-  @ManyToOne(() => Status, (status) => status.programEntities)
-  @JoinColumn([{ name: 'prog_status', referencedColumnName: 'status' }])
-  progStatus: Status;
+  @Column('character varying', {
+    name: 'prog_status',
+    nullable: true,
+    length: 15,
+    default: () => "'draft'",
+  })
+  progStatus: string | null;
 
   @OneToOne(
     () => ProgramEntityDescription,
@@ -163,18 +137,6 @@ export class ProgramEntity {
   )
   programReviews: ProgramReviews[];
 
-  @OneToMany(
-    () => SalesOrderDetail,
-    (salesOrderDetail) => salesOrderDetail.sodeProgEntity,
-  )
-  salesOrderDetails: SalesOrderDetail[];
-
   @OneToMany(() => Sections, (sections) => sections.sectProgEntity)
   sections: Sections[];
-
-  @OneToMany(
-    () => SpecialOfferPrograms,
-    (specialOfferPrograms) => specialOfferPrograms.socoProgEntity,
-  )
-  specialOfferPrograms: SpecialOfferPrograms[];
 }

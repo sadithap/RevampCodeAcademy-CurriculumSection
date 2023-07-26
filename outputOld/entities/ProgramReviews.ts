@@ -1,8 +1,7 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { ProgramEntity } from "./ProgramEntity";
-import { Users } from "./Users";
 
-@Index("prow_user_entity_id", ["prowProgEntityId", "prowUserEntityId"], {
+@Index("program_reviews_pkey", ["prowProgEntityId", "prowUserEntityId"], {
   unique: true,
 })
 @Entity("program_reviews", { schema: "curriculum" })
@@ -37,10 +36,4 @@ export class ProgramReviews {
     { name: "prow_prog_entity_id", referencedColumnName: "progEntityId" },
   ])
   prowProgEntity: ProgramEntity;
-
-  @ManyToOne(() => Users, (users) => users.programReviews)
-  @JoinColumn([
-    { name: "prow_user_entity_id", referencedColumnName: "userEntityId" },
-  ])
-  prowUserEntity: Users;
 }

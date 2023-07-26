@@ -28,15 +28,9 @@ export class SectionDetailMaterial {
     name: "sedm_filetype",
     nullable: true,
     length: 15,
+    default: () => "'image'",
   })
   sedmFiletype: string | null;
-
-  @Column("character varying", {
-    name: "sedm_filelink",
-    nullable: true,
-    length: 255,
-  })
-  sedmFilelink: string | null;
 
   @Column("timestamp without time zone", {
     name: "sedm_modified_date",

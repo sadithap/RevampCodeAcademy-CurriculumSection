@@ -64,6 +64,94 @@ export class ProgramEntityService {
       section_detail,
       section_detail_material
   */
+
+  public async insertPE(fields: any){
+    try {
+      const progEnt = await this.serviceProgEntity.save({
+        progTitle: fields.progTitle,
+        progHeadline: fields.progHeadline,
+        progType: fields.progType,
+        progLearningType: fields.progLearningType,
+        progRating: fields.progRating,
+        progTotalTrainee: fields.progTotalTrainee,
+        progModifiedDate: null, // Default Null saat buat baru
+        progImage: fields.progImage, // belum selesai (logo)
+        progBestSeller: fields.progBestSeller,
+        progPrice: fields.progPrice,
+        progLanguage: fields.progLanguage,
+        progDuration: fields.progDuration,
+        progDurationType: fields.progDurationType,
+        progTagSkill: fields.progTagSkill,
+        progCityI: fields.progCityI,
+        progCateI: fields.progCateI,
+        progCreatedByI: fields.progCreatedByI, // belum di ada function cek employee instructor apa bukan
+        progStatusI: fields.progStatusI,
+      });
+
+      return progEnt;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  public async insertDesc(fields: any) {
+    try {
+      const itemLearning = fields.predItemLearning.split(', '); // Split Item dari text ke array
+      const itemLearningJson = JSON.stringify(itemLearning); // Insert itemLearning dari array ke JSON
+
+      const progEntityDesc = await this.serviceProgEntDesc.save({
+        predProgEntityId: fields.progEntityId,
+        predItemLearning: JSON.parse(itemLearningJson),
+        predItemInclude: null, // Belum tahu format form dan datanya
+        predRequirement: null, // Belum tahu format form dan datanya
+        predDescription: fields.description, // Masih belum bisa input ke Json
+        predTargetLevel: null, // Belum tahu format form dan datanya
+      });
+
+      return progEntityDesc;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  public async insertSec(fields: any) {
+    try {
+      for (const section of fields.sections) {
+        const sect = await this.serviceSec.save({
+          sectProgEntityId: fields.progEntityId,
+          sectTitle: section.sectTitle,
+          sectDescription: section.sectDescription,
+          sectTotalSection: section.sectTotalSection,
+          sectTotalLecture: section.sectTotalLecture,
+          sectTotalMinute: section.sectTotalMinute,
+          sectModifiedDate: null,
+        });
+        for (const sectD of section.sectionDetail) {
+          const sectDet = await this.serviceSecDet.save({
+            secdTitle: sectD.secdTitle,
+            secdPreview: sectD.secdPreview,
+            secdScore: sectD.secdScore,
+            secdNote: sectD.secdNote,
+            secdMinute: sectD.secdMinute,
+            secdModifiedDate: null,
+            secdSectIdI: sect.sectId,
+          });
+          const sectDM = await this.serviceSecDetMat.save({
+            sedmFilename: sectD.sedmFilename,
+            sedmFilesize: sectD.sedmFilesize,
+            sedmFiletype: sectD.sedmFiletype,
+            sedmFilelink: sectD.sedmFilelink,
+            sedmModifiedDate: null,
+            sedmSectIdI: sectDet.secdId,
+          });
+        }
+      }
+
+      return true;
+    } catch (error) {
+      return error.message;
+    }
+  }
   public async insert(fields: any) {
     try {
       // Insert ke Table program_entity
@@ -82,10 +170,10 @@ export class ProgramEntityService {
         progDuration: fields.progDuration,
         progDurationType: fields.progDurationType,
         progTagSkill: fields.progTagSkill,
-        progCityId: fields.progCityId,
-        progCateId: fields.progCateId,
-        progCreatedBy: fields.progCreatedBy, // belum di ada function cek employee instructor apa bukan
-        progStatus: fields.progStatus,
+        progCityI: fields.progCityI,
+        progCateI: fields.progCateI,
+        progCreatedByI: fields.progCreatedByI, // belum di ada function cek employee instructor apa bukan
+        progStatusI: fields.progStatusI,
       });
 
       // Insert ke Table program_entity_description
@@ -170,8 +258,8 @@ export class ProgramEntityService {
         progDuration: fields.progDuration,
         progDurationType: fields.progDurationType,
         progTagSkill: fields.progTagSkill,
-        progCityId: fields.progCityId,
-        progCateId: fields.progCateId,
+        progCity: fields.progCityId,
+        progCate: fields.progCateId,
         progCreatedBy: fields.progCreatedBy, // belum di ada function cek employee instructor apa bukan
         progStatus: fields.progStatus,
       });

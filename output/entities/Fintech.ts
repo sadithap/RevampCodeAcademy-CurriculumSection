@@ -1,13 +1,5 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  OneToMany,
-  OneToOne,
-} from "typeorm";
+import { Column, Entity, Index, JoinColumn, OneToOne } from "typeorm";
 import { BusinessEntity } from "./BusinessEntity";
-import { UsersAccount } from "./UsersAccount";
 
 @Index("fintech_fint_code_key", ["fintCode"], { unique: true })
 @Index("fintech_pkey", ["fintEntityId"], { unique: true })
@@ -42,10 +34,4 @@ export class Fintech {
   @OneToOne(() => BusinessEntity, (businessEntity) => businessEntity.fintech)
   @JoinColumn([{ name: "fint_entity_id", referencedColumnName: "entityId" }])
   fintEntity: BusinessEntity;
-
-  @OneToMany(
-    () => UsersAccount,
-    (usersAccount) => usersAccount.usacBankEntity_2
-  )
-  usersAccounts: UsersAccount[];
 }

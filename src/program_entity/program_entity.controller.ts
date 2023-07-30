@@ -28,7 +28,17 @@ export class ProgramEntityController {
 
   @Post()
   public async Create(@Body() fields: any) {
-    return this.Service.insert(fields);
+    return this.Service.insertPE(fields);
+  }
+
+  @Post('/desc')
+  public async CreateD(@Body() fields: any) {
+    return this.Service.insertDesc(fields);
+  }
+
+  @Post('/sect')
+  public async CreateS(@Body() fields: any) {
+    return this.Service.insertSec(fields);
   }
 
   @Put(':id')

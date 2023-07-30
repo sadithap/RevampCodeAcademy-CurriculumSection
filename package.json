@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "db": "typeorm-model-generator -h localhost -d codexacademy -p 5432 -u postgres -x admin -e postgres",
+    "db": "typeorm-model-generator -h localhost -d revampdb -p 5432 -u postgres -x admin -s hr,master,users,sales,payment,jobhire,curriculum,bootcamp -e postgres",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

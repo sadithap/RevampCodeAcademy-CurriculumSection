@@ -45,8 +45,8 @@ export class SectionDetail {
   })
   secdModifiedDate: Date | null;
 
-  @Column('integer', { name: 'secd_sect_id', nullable: false })
-  secdSectid: number;
+  @Column('integer', { name: 'secd_sect_id', nullable: true })
+  secdSectIdI: number | null;
 
   @ManyToOne(() => Sections, (sections) => sections.sectionDetails)
   @JoinColumn([{ name: 'secd_sect_id', referencedColumnName: 'sectId' }])

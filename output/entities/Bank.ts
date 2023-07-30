@@ -1,13 +1,5 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  OneToMany,
-  OneToOne,
-} from "typeorm";
+import { Column, Entity, Index, JoinColumn, OneToOne } from "typeorm";
 import { BusinessEntity } from "./BusinessEntity";
-import { UsersAccount } from "./UsersAccount";
 
 @Index("bank_bank_code_key", ["bankCode"], { unique: true })
 @Index("bank_pkey", ["bankEntityId"], { unique: true })
@@ -42,7 +34,4 @@ export class Bank {
   @OneToOne(() => BusinessEntity, (businessEntity) => businessEntity.bank)
   @JoinColumn([{ name: "bank_entity_id", referencedColumnName: "entityId" }])
   bankEntity: BusinessEntity;
-
-  @OneToMany(() => UsersAccount, (usersAccount) => usersAccount.usacBankEntity)
-  usersAccounts: UsersAccount[];
 }

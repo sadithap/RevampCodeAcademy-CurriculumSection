@@ -139,7 +139,7 @@ export class ProgramEntityService {
         progTagSkill: fields.progTagSkill,
         progCityI: fields.progCityI,
         progCateI: fields.progCateI,
-        progCreatedByI: fields.progCreatedByI, // belum di ada function cek employee instructor apa bukan
+        progCreatedByI: fields.progCreatedByI,
         progStatusI: fields.progStatusI,
       });
 
@@ -203,15 +203,34 @@ export class ProgramEntityService {
 
   public async update(id: number, fields: any) {
     try {
+      //cek apakah seorang instructor atau tidak
+      const user = await this.serviceUser.findOne({
+        where: { userEntityId: fields.progCreatedByI },
+      });
+      const userRole = await this.serviceUserRole.find({
+        where: { usroEntityId: user.userEntityId },
+      });
+      let role = undefined;
+      for (const temp of userRole) {
+        role = await this.serviceRole.findOne({
+          where: { roleId: temp.usroRoleId },
+        });
+      }
+
+      const { roleName } = role;
+
+      if (roleName !== 'Instructor') {
+        return 'need a Instructor';
+      }
       // Insert ke Table program_entity
-      const progEnt = await this.serviceProgEntity.update(id, {
+      const progEnt = await this.serviceProgEntity.save({
         progTitle: fields.progTitle,
         progHeadline: fields.progHeadline,
         progType: fields.progType,
         progLearningType: fields.progLearningType,
         progRating: fields.progRating,
         progTotalTrainee: fields.progTotalTrainee,
-        progModifiedDate: new Date(),
+        progModifiedDate: null, // Default Null saat buat baru
         progImage: fields.progImage, // belum selesai (logo)
         progBestSeller: fields.progBestSeller,
         progPrice: fields.progPrice,
@@ -219,17 +238,17 @@ export class ProgramEntityService {
         progDuration: fields.progDuration,
         progDurationType: fields.progDurationType,
         progTagSkill: fields.progTagSkill,
-        progCity: fields.progCityId,
-        progCate: fields.progCateId,
-        progCreatedBy: fields.progCreatedBy, // belum di ada function cek employee instructor apa bukan
-        progStatus: fields.progStatus,
+        progCityI: fields.progCityI,
+        progCateI: fields.progCateI,
+        progCreatedByI: fields.progCreatedByI,
+        progStatusI: fields.progStatusI,
       });
 
-      // Insert ke Table program_entity_description
       const itemLearning = fields.predItemLearning.split(', '); // Split Item dari text ke array
       const itemLearningJson = JSON.stringify(itemLearning); // Insert itemLearning dari array ke JSON
 
-      const progEntityDesc = await this.serviceProgEntDesc.update(id, {
+      const progEntityDesc = await this.serviceProgEntDesc.save({
+        predProgEntityId: progEnt.progEntityId,
         predItemLearning: JSON.parse(itemLearningJson),
         predItemInclude: null, // Belum tahu format form dan datanya
         predRequirement: null, // Belum tahu format form dan datanya
@@ -237,56 +256,50 @@ export class ProgramEntityService {
         predTargetLevel: null, // Belum tahu format form dan datanya
       });
 
-      // Insert ke Table Sections dan SectionDetails
-      const sections = [];
-      const sectionDetailList = [];
       for (const section of fields.sections) {
-        // Jadikan sectionDetail sebagai constanta
-        const sectionDetail = section.sectionDetail;
-        // Count Total Section (belum)
-        // Count Total Lecture (belum)
-        // Count Total Minute (belum)
-
-        // Insert ke Table Sections
-        // const sectionItem = await this.serviceSec.update({
-        //   sectProgEntityId: progEnt.progEntityId,
-        //   sectTitle: section.title,
-        //   sectDescription: section.description,
-        //   sectTotalSection: null,
-        //   sectTotalLecture: null,
-        //   sectTotalMinute: null,
-        //   sectModifiedDate: null, // Default Null saat insert
-        // });
-
-        // Insert ke Table Section Details
-        for (const item of sectionDetail) {
-          const sectionDetailItem = await this.serviceSecDet.save({
-            secdTitle: item.detailtitle,
-            secdPreview: item.detailPreview,
-            secdScore: item.detailScore,
-            secdNote: item.detailNote,
-            secdMinute: item.detailMinute,
-            secdModifiedDate: null, // Default Null saat insert
-            // secdSectid: sectionItem.sectId,
+        const sect = await this.serviceSec.save({
+          sectProgEntityId: progEnt.progEntityId,
+          sectTitle: section.sectTitle,
+          sectDescription: section.sectDescription,
+          sectTotalSection: section.sectTotalSection,
+          sectTotalLecture: section.sectTotalLecture,
+          sectTotalMinute: section.sectTotalMinute,
+          sectModifiedDate: null,
+        });
+        for (const sectD of section.sectionDetail) {
+          const sectDet = await this.serviceSecDet.save({
+            secdTitle: sectD.secdTitle,
+            secdPreview: sectD.secdPreview,
+            secdScore: sectD.secdScore,
+            secdNote: sectD.secdNote,
+            secdMinute: sectD.secdMinute,
+            secdModifiedDate: null,
+            secdSectIdI: sect.sectId,
           });
-          sectionDetailList.push(sectionDetailItem);
+          const sectDM = await this.serviceSecDetMat.save({
+            sedmFilename: sectD.sedmFilename,
+            sedmFilesize: sectD.sedmFilesize,
+            sedmFiletype: sectD.sedmFiletype,
+            sedmFilelink: sectD.sedmFilelink,
+            sedmModifiedDate: null,
+            sedmSectIdI: sectDet.secdId,
+          });
         }
-        // sections.push(sectionItem);
       }
 
-      // Insert ke table section_detail_material
-      // Belum
-
-      return {
-        progEnt,
-        progEntityDesc,
-        sections,
-        sectionDetailList,
-      };
+      const result = await this.serviceProgEntity.findOne({
+        where: { progEntityId: progEnt.progEntityId },
+        relations: [
+          'programEntityDescription',
+          'sections',
+          'sections.sectionDetails',
+          'sections.sectionDetails.sectionDetailMaterials',
+        ],
+      });
+      return result;
     } catch (error) {
       return error.message;
-    }
-  }
+    }  }
 
   public async Delete(id: number) {
     try {

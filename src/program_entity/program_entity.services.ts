@@ -6,6 +6,9 @@ import { ProgramEntityDescription } from 'output/entities/ProgramEntityDescripti
 import { Sections } from 'output/entities/Sections';
 import { SectionDetail } from 'output/entities/SectionDetail';
 import { SectionDetailMaterial } from 'output/entities/SectionDetailMaterial';
+import { Users } from 'output/entities/Users';
+import { UsersRoles } from 'output/entities/UsersRoles';
+import { Roles } from 'output/entities/Roles';
 
 @Injectable()
 export class ProgramEntityService {
@@ -20,6 +23,12 @@ export class ProgramEntityService {
     private serviceSecDet: Repository<SectionDetail>,
     @InjectRepository(SectionDetailMaterial)
     private serviceSecDetMat: Repository<SectionDetailMaterial>,
+    @InjectRepository(Users)
+    private serviceUser: Repository<Users>,
+    @InjectRepository(UsersRoles)
+    private serviceUserRole: Repository<UsersRoles>,
+    @InjectRepository(Roles)
+    private serviceRole: Repository<Roles>,
   ) {}
 
   /* 
@@ -65,8 +74,53 @@ export class ProgramEntityService {
       section_detail_material
   */
 
+  public async tes(fields: any) {
+    try {
+      const user = await this.serviceUser.findOne({
+        where: { userEntityId: fields.progCreatedByI },
+      });
+      const userRole = await this.serviceUserRole.find({
+        where: { usroEntityId: user.userEntityId },
+      });
+      let role = undefined;
+      for (const temp of userRole) {
+        role = await this.serviceRole.findOne({
+          where: { roleId: temp.usroRoleId },
+        });
+      }
+
+      const { roleName } = role;
+      return {
+        user,
+        userRole,
+        role,
+        roleName,
+      };
+    } catch (error) {
+      return error.message;
+    }
+  }
   public async insert(fields: any) {
     try {
+      //cek apakah seorang instructor atau tidak
+      const user = await this.serviceUser.findOne({
+        where: { userEntityId: fields.progCreatedByI },
+      });
+      const userRole = await this.serviceUserRole.find({
+        where: { usroEntityId: user.userEntityId },
+      });
+      let role = undefined;
+      for (const temp of userRole) {
+        role = await this.serviceRole.findOne({
+          where: { roleId: temp.usroRoleId },
+        });
+      }
+
+      const { roleName } = role;
+
+      if (roleName !== 'Instructor') {
+        return 'need a Instructor';
+      }
       // Insert ke Table program_entity
       const progEnt = await this.serviceProgEntity.save({
         progTitle: fields.progTitle,

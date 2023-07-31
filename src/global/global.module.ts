@@ -9,6 +9,9 @@ import { SectionDetail } from 'output/entities/SectionDetail';
 import { SectionDetailMaterial } from 'output/entities/SectionDetailMaterial';
 import { MulterModule } from '@nestjs/platform-express';
 import { UploadMulter } from 'src/multer/multer';
+import { Users } from 'output/entities/Users';
+import { UsersRoles } from 'output/entities/UsersRoles';
+import { Roles } from 'output/entities/Roles';
 
 @Module({
   imports: [
@@ -18,6 +21,9 @@ import { UploadMulter } from 'src/multer/multer';
       Sections,
       SectionDetail,
       SectionDetailMaterial,
+      Users,
+      UsersRoles,
+      Roles,
     ]),
     MulterModule.register(UploadMulter.MulterOption()),
   ],

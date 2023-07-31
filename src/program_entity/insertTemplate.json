@@ -15,10 +15,10 @@
         "XML",
         "JavaScript"
     ],
-    "progCityId": 2,
-    "progCateId": 2,
-    "progCreatedBy": 1,
-    "progStatus": "publish",
+    "progCityI": 2,
+    "progCateI": 2,
+    "progCreatedByI": 9,
+    "progStatusI": "Publish",
     "predItemLearning": "Variables, Conditions, Loops",
     "description": "Get started with the fundamentals of programming and learn key concepts such as variables, conditions, and loops. This course is suitable for beginners who want to dive into the world of coding and build a solid foundation.",
     "sections": [

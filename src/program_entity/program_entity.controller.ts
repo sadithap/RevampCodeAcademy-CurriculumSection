@@ -31,6 +31,11 @@ export class ProgramEntityController {
     return this.Service.insert(fields);
   }
 
+  @Post('/tes')
+  public async Tes(@Body() fields: any) {
+    return this.Service.tes(fields);
+  }
+
   @Put(':id')
   public async Update(@Body() fields: any, @Param('id') id: number) {
     return this.Service.update(id, fields);

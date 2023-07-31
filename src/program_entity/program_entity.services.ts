@@ -65,8 +65,9 @@ export class ProgramEntityService {
       section_detail_material
   */
 
-  public async insertPE(fields: any){
+  public async insert(fields: any) {
     try {
+      // Insert ke Table program_entity
       const progEnt = await this.serviceProgEntity.save({
         progTitle: fields.progTitle,
         progHeadline: fields.progHeadline,
@@ -88,19 +89,11 @@ export class ProgramEntityService {
         progStatusI: fields.progStatusI,
       });
 
-      return progEnt;
-    } catch (error) {
-      return error.message;
-    }
-  }
-
-  public async insertDesc(fields: any) {
-    try {
       const itemLearning = fields.predItemLearning.split(', '); // Split Item dari text ke array
       const itemLearningJson = JSON.stringify(itemLearning); // Insert itemLearning dari array ke JSON
 
       const progEntityDesc = await this.serviceProgEntDesc.save({
-        predProgEntityId: fields.progEntityId,
+        predProgEntityId: progEnt.progEntityId,
         predItemLearning: JSON.parse(itemLearningJson),
         predItemInclude: null, // Belum tahu format form dan datanya
         predRequirement: null, // Belum tahu format form dan datanya
@@ -108,17 +101,9 @@ export class ProgramEntityService {
         predTargetLevel: null, // Belum tahu format form dan datanya
       });
 
-      return progEntityDesc;
-    } catch (error) {
-      return error.message;
-    }
-  }
-
-  public async insertSec(fields: any) {
-    try {
       for (const section of fields.sections) {
         const sect = await this.serviceSec.save({
-          sectProgEntityId: fields.progEntityId,
+          sectProgEntityId: progEnt.progEntityId,
           sectTitle: section.sectTitle,
           sectDescription: section.sectDescription,
           sectTotalSection: section.sectTotalSection,
@@ -147,94 +132,16 @@ export class ProgramEntityService {
         }
       }
 
-      return true;
-    } catch (error) {
-      return error.message;
-    }
-  }
-  public async insert(fields: any) {
-    try {
-      // Insert ke Table program_entity
-      const progEnt = await this.serviceProgEntity.save({
-        progTitle: fields.progTitle,
-        progHeadline: fields.progHeadline,
-        progType: fields.progType,
-        progLearningType: fields.progLearningType,
-        progRating: fields.progRating,
-        progTotalTrainee: fields.progTotalTrainee,
-        progModifiedDate: null, // Default Null saat buat baru
-        progImage: fields.progImage, // belum selesai (logo)
-        progBestSeller: fields.progBestSeller,
-        progPrice: fields.progPrice,
-        progLanguage: fields.progLanguage,
-        progDuration: fields.progDuration,
-        progDurationType: fields.progDurationType,
-        progTagSkill: fields.progTagSkill,
-        progCityI: fields.progCityI,
-        progCateI: fields.progCateI,
-        progCreatedByI: fields.progCreatedByI, // belum di ada function cek employee instructor apa bukan
-        progStatusI: fields.progStatusI,
+      const result = await this.serviceProgEntity.findOne({
+        where: { progEntityId: progEnt.progEntityId },
+        relations: [
+          'programEntityDescription',
+          'sections',
+          'sections.sectionDetails',
+          'sections.sectionDetails.sectionDetailMaterials',
+        ],
       });
-
-      // Insert ke Table program_entity_description
-      const itemLearning = fields.predItemLearning.split(', '); // Split Item dari text ke array
-      const itemLearningJson = JSON.stringify(itemLearning); // Insert itemLearning dari array ke JSON
-
-      const progEntityDesc = await this.serviceProgEntDesc.save({
-        predProgEntityId: progEnt.progEntityId,
-        predItemLearning: JSON.parse(itemLearningJson),
-        predItemInclude: null, // Belum tahu format form dan datanya
-        predRequirement: null, // Belum tahu format form dan datanya
-        predDescription: fields.description, // Masih belum bisa input ke Json
-        predTargetLevel: null, // Belum tahu format form dan datanya
-      });
-
-      // Insert ke Table Sections dan SectionDetails
-      const sections = [];
-      const sectionDetailList = [];
-      for (const section of fields.sections) {
-        // Jadikan sectionDetail sebagai constanta
-        const sectionDetail = section.sectionDetail;
-        // Count Total Section (belum)
-        // Count Total Lecture (belum)
-        // Count Total Minute (belum)
-
-        // Insert ke Table Sections
-        const sectionItem = await this.serviceSec.save({
-          sectProgEntityId: progEnt.progEntityId,
-          sectTitle: section.title,
-          sectDescription: section.description,
-          sectTotalSection: null,
-          sectTotalLecture: null,
-          sectTotalMinute: null,
-          sectModifiedDate: null, // Default Null saat insert
-        });
-
-        // Insert ke Table Section Details
-        for (const item of sectionDetail) {
-          const sectionDetailItem = await this.serviceSecDet.save({
-            secdTitle: item.detailtitle,
-            secdPreview: item.detailPreview,
-            secdScore: item.detailScore,
-            secdNote: item.detailNote,
-            secdMinute: item.detailMinute,
-            secdModifiedDate: null, // Default Null saat insert
-            secdSectid: sectionItem.sectId,
-          });
-          sectionDetailList.push(sectionDetailItem);
-        }
-        sections.push(sectionItem);
-      }
-
-      // Insert ke table section_detail_material
-      // Belum
-
-      return {
-        progEnt,
-        progEntityDesc,
-        sections,
-        sectionDetailList,
-      };
+      return result;
     } catch (error) {
       return error.message;
     }

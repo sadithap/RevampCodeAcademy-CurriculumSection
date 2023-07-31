@@ -1,0 +1,88 @@
+{
+    "progTitle": "Java Fundamental",
+    "progHeadline": "Learn the Fundamental",
+    "progType": "course",
+    "progLearningType": "online",
+    "progRating": 3.0,
+    "progTotalTrainee": 50,
+    "progImage": null,
+    "progBestSeller": "1",
+    "progPrice": 500,
+    "progLanguage": "english",
+    "progDuration": 1,
+    "progDurationType": "days",
+    "progTagSkill": [
+        "XML",
+        "JavaScript"
+    ],
+    "progCityId": 2,
+    "progCateId": 2,
+    "progCreatedBy": 1,
+    "progStatus": "publish",
+    "predItemLearning": "Variables, Conditions, Loops",
+    "description": "Get started with the fundamentals of programming and learn key concepts such as variables, conditions, and loops. This course is suitable for beginners who want to dive into the world of coding and build a solid foundation.",
+    "sections": [
+        {
+            "sectTitle": "Introduction to react Native",
+            "sectDescription": "Learn the basics of programming and understand how it is used in various applications.",
+            "sectTotalSection": 12,
+            "sectTotalLecture": 20,
+            "sectTotalMinute": 300,
+            "sectionDetail": [
+                {
+                    "secdTitle": "Variables and Data Types",
+                    "secdPreview": "1",
+                    "secdScore": 0,
+                    "secdNote": "",
+                    "secdMinute": 30,
+                    "sedmFilename": "tes.png",
+                    "sedmFilesize": 30,
+                    "sedmFiletype": "image",
+                    "sedmFilelink": "c:/"
+                },
+                {
+                    "secdTitle": "Function",
+                    "secdPreview": "1",
+                    "secdScore": 0,
+                    "secdNote": "",
+                    "secdMinute": 30,
+                    "sedmFilename": "tes.png",
+                    "sedmFilesize": 30,
+                    "sedmFiletype": "image",
+                    "sedmFilelink": "c:/"
+                }
+            ]
+        },
+        {
+            "sectTitle": "Redux",
+            "sectDescription": "Learn the basics of programming and understand how it is used in various applications.",
+            "sectTotalSection": 15,
+            "sectTotalLecture": 23,
+            "sectTotalMinute": 350,
+            "sectionDetail": [
+                {
+                    "secdTitle": "Saga",
+                    "secdPreview": "1",
+                    "secdScore": 0,
+                    "secdNote": "",
+                    "secdMinute": 30,
+                    "sedmFilename": "tes.png",
+                    "sedmFilesize": 15,
+                    "sedmFiletype": "image",
+                    "sedmFilelink": "c:/"
+                },
+                {
+                    "secdTitle": "Another",
+                    "secdPreview": "1",
+                    "secdScore": 0,
+                    "secdNote": "",
+                    "secdMinute": 30,
+                    "sedmFilename": "tes.png",
+                    "sedmFilesize": 6,
+                    "sedmFiletype": "image",
+                    "sedmFilelink": "c:/"
+                }
+            ]
+        }
+    ]
+}
